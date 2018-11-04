@@ -34,3 +34,4 @@ if __name__ == "__main__":
         refresh_events_scheduler.shutdown()
 
     GUI.initialize()
+    print("intitialized")
