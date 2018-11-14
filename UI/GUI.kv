@@ -1,0 +1,49 @@
+<MainScreen>:
+    name: "main"
+    FloatLayout:
+        size_hint: None, None
+
+        #Clock
+        Label:
+            id: clock_label
+            font_name: "Roboto-Regular"
+            font_size: 40
+            center_x: root.center_x
+            center_y: root.center_y * 1.9
+            color: 0, 0, 0, 1
+
+        # Current temperature label
+        Label:
+            id: current_temp_label
+            center_x: root.center_x * 0.3
+            center_y: root.center_y
+            color: 0,0,1,1
+
+		# Quit Button
+        Button:
+            text: 'X'
+            font_size: 23
+            size_hint: None,None
+            size: root.width * 0.015,root.width * 0.015
+            x: root.width * 0.965
+            y: root.height * 0.945
+            background_color: 0.7, 0.7, 0.7, 1
+            on_press: root.exitProgram()
+
+        # Arrow up image for temperature control
+        ImageButton:
+            id: arrow_up_image
+            x: root.width * 0.8
+            y: root.height * 0.5
+            size: 175, 175
+            source: 'UI/arrow_up.png'
+            on_press: self.pressed()
+
+        # Arrow down image for temperature control
+        ImageButton:
+            id: arrow_down_image
+            x: root.width * 0.8
+            y: root.height * 0.25
+            size: 175, 175
+            source: 'UI/arrow_down.png'
+            on_press: self.pressed()

@@ -1,8 +1,8 @@
-import CalendarEvents
+from CalendarEvents import CalendarEvents
+from UI import GUI # TODO consider making a python module to hold all files to be imported
 from apscheduler.schedulers.background import BackgroundScheduler
-import GUI
 
-google_cal = CalendarEvents.CalendarEvents('credentials.json')
+google_cal = CalendarEvents.CalendarEvents('CalendarEvents/credentials.json')
 calendar_events = []
 
 def refresh_calendar_events():
@@ -34,4 +34,3 @@ if __name__ == "__main__":
         refresh_events_scheduler.shutdown()
 
     GUI.initialize()
-    print("intitialized")

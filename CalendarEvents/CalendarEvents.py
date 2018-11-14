@@ -10,7 +10,7 @@ class CalendarEvents:
 
     def __init__(self, credential_name):
         self.credential_name = credential_name
-        self.store = file.Storage("token.json")
+        self.store = file.Storage("CalendarEvents/token.json")
         self.credentials = self.store.get()
         self.service = build('calendar', 'v3', http=self.credentials.authorize(Http()))
 
