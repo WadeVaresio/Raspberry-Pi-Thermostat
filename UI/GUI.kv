@@ -15,8 +15,10 @@
         # Current temperature label
         Label:
             id: current_temp_label
-            center_x: root.center_x * 0.3
-            center_y: root.center_y
+            font_size: 45
+            text: "Current Temp"
+            center_x: root.center_x * 0.8
+            center_y: root.center_y * 1.45
             color: 0,0,1,1
 
 		# Quit Button
@@ -24,26 +26,56 @@
             text: 'X'
             font_size: 23
             size_hint: None,None
-            size: root.width * 0.015,root.width * 0.015
+            size: root.width * 0.015, root.width * 0.015
             x: root.width * 0.965
             y: root.height * 0.945
             background_color: 0.7, 0.7, 0.7, 1
-            on_press: root.exitProgram()
+            on_press: root.exit_program()
 
-        # Arrow up image for temperature control
+        # Arrow up image
         ImageButton:
             id: arrow_up_image
             x: root.width * 0.8
             y: root.height * 0.5
             size: 175, 175
             source: 'UI/arrow_up.png'
-            on_press: self.pressed()
+            on_press: self.increase_temperature()
 
-        # Arrow down image for temperature control
+        # Arrow down image
         ImageButton:
             id: arrow_down_image
             x: root.width * 0.8
             y: root.height * 0.25
             size: 175, 175
             source: 'UI/arrow_down.png'
-            on_press: self.pressed()
+            on_press: self.decrease_temperature()
+
+        #Set Button
+        Button:
+            id: set_button
+            text: "Set"
+            x: root.width * 0.835
+            y: root.height * 0.15
+            size: 100, 100
+            background_color: 0.5, 0.5, 0.5, 1
+            on_press: root.set_button_press()
+
+        #Upcoming events
+        Button:
+            id: upcoming_events_button
+            text: "Upcoming"
+            x: root.width * 0.165
+            y: root.height * 0.15
+            size: 100, 100
+            background_color: 0.5, 0.5, 0.5, 1
+            on_press: root.see_upcoming_events()
+
+<UpcomingEvents>:
+    name: "upcoming_events"
+
+    Label:
+        text: "test"
+        font_size: 50
+        center_x: root.center_x
+        center_y: root.center_y
+        color: 0,0,1,1
