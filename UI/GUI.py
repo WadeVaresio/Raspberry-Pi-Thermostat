@@ -9,6 +9,7 @@ import time
 
 screen_manager = ScreenManager()
 Builder.load_file('UI/GUI.kv')
+Builder.load_file('UI/UpcomingEvents.kv')
 Builder.load_file('UI/ImageButton.kv')
 
 Window.clearcolor = (1,1,1,1)
@@ -44,12 +45,11 @@ class MainScreen(Screen):
 
     def see_upcoming_events(self):
         screen_manager.current = 'upcoming_events'
-        print("upcoming events")
 
 
 class ImageButton(ButtonBehavior, Image):
     def increase_temperature(self):
-        # TODO implement increase temperature
+        # TODO implement increase temperaturehttps://weather.com/
         print("arrow up imagebutton pressed")
 
     def decrease_temperature(self):
@@ -58,8 +58,8 @@ class ImageButton(ButtonBehavior, Image):
 
 
 class UpcomingEvents(Screen):
-    pass
-
+    def pressed(self):
+        screen_manager.current = 'main'
 
 screen_manager.add_widget(MainScreen(name='main'))
 screen_manager.add_widget(UpcomingEvents(name='upcoming_events'))

@@ -18,7 +18,6 @@ class CalendarEvents:
             flow = client.flow_from_clientsecrets(self.credentialName, self.SCOPES)
             self.credentials = tools.run_flow(flow, self.store)
 
-
     def get_events(self, num_events):
         now = datetime.datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
 
