@@ -1,8 +1,8 @@
-from CalendarEvents import CalendarEvents
-from UI import GUI  # TODO consider making a python module to hold all files to be imported
+from thermostat.calendarevents import CalendarEvents
+from thermostat.ui import GUI
 from apscheduler.schedulers.background import BackgroundScheduler
 
-google_cal = CalendarEvents.CalendarEvents('CalendarEvents/credentials.json')
+google_cal = CalendarEvents.CalendarEvents('credentials.json')
 calendar_events = google_cal.get_events(10)
 
 

@@ -10,9 +10,9 @@ from kivy.uix.button import Button
 import time
 
 screen_manager = ScreenManager()
-Builder.load_file('UI/GUI.kv')
-#Builder.load_file('UI/UpcomingEvents.kv')
-Builder.load_file('UI/ImageButton.kv')
+Builder.load_file('thermostat/ui/GUI.kv')
+#Builder.load_file('ui/UpcomingEvents.kv')
+Builder.load_file('thermostat/ui/ImageButton.kv')
 
 Window.clearcolor = (1,1,1,1)
 Window.size = (1000, 1000)
