@@ -1,20 +1,12 @@
 <UpcomingEvents>:
     name: "upcoming_events"
-    FloatLayout:
-        size_hint: None, None
+    GridLayout:
+        rows: 1
+        col: 1
 
         Label:
-            id: title
-            text: "Upcoming Events"
-            font_size: 50
+            text: "Test"
+            font_size: 40
+            color: 0, 0, 0, 1
             center_x: root.center_x
             center_y: root.center_y
-            color: 0,0,1,1
-
-        Button:
-            id: return_button
-            text: "Return"
-            size: 75, 75
-            center_x: root.width * 0.9
-            center_y: root.height * 0.1
-            on_press: root.pressed()

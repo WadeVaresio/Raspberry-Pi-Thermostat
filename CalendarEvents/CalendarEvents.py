@@ -30,6 +30,5 @@ class CalendarEvents:
             print("there are no upcoming events in the calendar")
         for event in events:
             start = event['start'].get('dateTime', event['start'].get('date'))
-            # print(start, event['summary'])
 
         return events

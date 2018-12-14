@@ -4,12 +4,14 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.image import Image
+from kivy.uix.gridlayout import GridLayout
 from apscheduler.schedulers.background import BackgroundScheduler
+from kivy.uix.button import Button
 import time
 
 screen_manager = ScreenManager()
 Builder.load_file('UI/GUI.kv')
-Builder.load_file('UI/UpcomingEvents.kv')
+#Builder.load_file('UI/UpcomingEvents.kv')
 Builder.load_file('UI/ImageButton.kv')
 
 Window.clearcolor = (1,1,1,1)
@@ -49,7 +51,7 @@ class MainScreen(Screen):
 
 class ImageButton(ButtonBehavior, Image):
     def increase_temperature(self):
-        # TODO implement increase temperaturehttps://weather.com/
+        # TODO implement increase temperature
         print("arrow up imagebutton pressed")
 
     def decrease_temperature(self):
@@ -58,6 +60,8 @@ class ImageButton(ButtonBehavior, Image):
 
 
 class UpcomingEvents(Screen):
+    layout = GridLayout(rows=5, cols=5)
+
     def pressed(self):
         screen_manager.current = 'main'
 

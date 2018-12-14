@@ -7,25 +7,8 @@ calendar_events = google_cal.get_events(10)
 
 
 def refresh_calendar_events():
-    fetched_events = google_cal.get_events(10)
-    for event in fetched_events:
-        print(event['summary'])
-    if check_for_new_events(fetched_events):
-        print("we need to do some work")
-    else:
-        print("were chillin")
-
-
-def check_for_new_events(fetched_events):
     global calendar_events
-
-    for fetched_event in fetched_events:
-        for existing_event in calendar_events:
-            if fetched_event is not existing_event:
-                calendar_events = fetched_events
-                print("There is a new event")
-                return True
-    return False
+    calendar_events = google_cal.get_events(10)
 
 
 def update_temperature():
