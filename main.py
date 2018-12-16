@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from thermostat.calendarevents import CalendarEvents
 from thermostat.ui import GUI
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -20,11 +22,12 @@ if __name__ == "__main__":
     refresh_events_scheduler.add_job(refresh_calendar_events, 'interval', seconds=10)
 
     update_current_temp_scheduler = BackgroundScheduler()
-    update_current_temp_scheduler.add_job(update_temperature, 'interval', seconds=1)
+    update_current_temp_scheduler.add_job(update_temperature, 'interval', minutes=5)
 
     try:
         refresh_events_scheduler.start()
         update_current_temp_scheduler.start()
+        update_temperature()
     except (KeyboardInterrupt, SystemExit):
         refresh_events_scheduler.shutdown()
         update_current_temp_scheduler.shutdown()

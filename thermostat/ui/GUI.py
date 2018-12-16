@@ -4,23 +4,23 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.image import Image
-from kivy.uix.gridlayout import GridLayout
 from apscheduler.schedulers.background import BackgroundScheduler
-from kivy.uix.button import Button
 import time
 
 screen_manager = ScreenManager()
 Builder.load_file('thermostat/ui/GUI.kv')
-#Builder.load_file('ui/UpcomingEvents.kv')
-Builder.load_file('thermostat/ui/ImageButton.kv')
+Builder.load_file('thermostat/ui/UpcomingEvents.kv')
 
 Window.clearcolor = (1,1,1,1)
 Window.size = (1000, 1000)
 
+TEMPERATURE = 68
+PROPOSED_TEMP = TEMPERATURE
 
-# TODO Implement Kivy Google Material Theme
+
 class Main(App):
-    def update_time(self):
+    @staticmethod
+    def update_time():
         screen_manager.get_screen('main').ids.clock_label.text = time.asctime()
 
     def build(self):
@@ -36,34 +36,53 @@ class Main(App):
 
 
 class MainScreen(Screen):
-    def exit_program(self):
+    @staticmethod
+    def exit_program():
         quit()
 
-    def update_time(self):
+    @staticmethod
+    def update_time():
         screen_manager.get_screen('main').ids.clock_label.text = time.asctime()
 
     def set_button_press(self):
-        pass
+        global TEMPERATURE, PROPOSED_TEMP
+        TEMPERATURE = PROPOSED_TEMP
+
+        screen_manager.get_screen('main').ids.current_temp_label.text = "Current Temp: %sF" % str(TEMPERATURE)
+        screen_manager.get_screen('main').ids.set_temperature_label.color = 0, 0, 0, 0
 
     def see_upcoming_events(self):
         screen_manager.current = 'upcoming_events'
 
 
 class ImageButton(ButtonBehavior, Image):
-    def increase_temperature(self):
-        # TODO implement increase temperature
-        print("arrow up imagebutton pressed")
 
-    def decrease_temperature(self):
-        # TODO implement decrease temperature
-        print("arrow down imagebutton pressed")
+    def update_proposed_temp(self, instance):
+        global PROPOSED_TEMP
+
+        if instance.change is "increase":
+            PROPOSED_TEMP += 1
+            self.update_temp(PROPOSED_TEMP)
+        else:
+            PROPOSED_TEMP -= 1
+            self.update_temp(PROPOSED_TEMP)
+
+    @staticmethod
+    def update_temp(temp):
+        set_temp_label = screen_manager.get_screen('main').ids.set_temperature_label
+        set_temp_label.color = 0, 0, 0, 1
+        set_temp_label.text = str(temp)
 
 
 class UpcomingEvents(Screen):
-    layout = GridLayout(rows=5, cols=5)
 
-    def pressed(self):
-        screen_manager.current = 'main'
+    def on_enter(self):
+        # TODO update event labels based on data from calendar
+        print(screen_manager.get_screen('upcoming_events').ids)
+
+    def edit_button_pressed(self, instance):
+        print(instance.associated_event)
+
 
 screen_manager.add_widget(MainScreen(name='main'))
 screen_manager.add_widget(UpcomingEvents(name='upcoming_events'))
@@ -76,4 +95,4 @@ def initialize():
 
 def update_temperature():
     # TODO implement temperature sensor
-    screen_manager.get_screen('main').ids.current_temp_label.text = "Current Temp\n"
+    screen_manager.get_screen('main').ids.current_temp_label.text = "Current Temp: %sF" % str(TEMPERATURE)
