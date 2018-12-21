@@ -51,7 +51,7 @@
             x: root.width * 0.8
             y: root.height * 0.5
             size: 175, 175
-            source: 'thermostat/ui/arrow_up.png'
+            source: 'thermostat/ui/images/arrow_up.png'
             on_press: self.update_proposed_temp(self)
 
         # Arrow down image
@@ -61,7 +61,7 @@
             x: root.width * 0.8
             y: root.height * 0.25
             size: 175, 175
-            source: 'thermostat/ui/arrow_down.png'
+            source: 'thermostat/ui/images/arrow_down.png'
             on_press: self.update_proposed_temp(self)
 
         #Set Button
@@ -82,4 +82,4 @@
             y: root.height * 0.15
             size: 100, 100
             background_color: 0.5, 0.5, 0.5, 1
-            on_press: root.see_upcoming_events()
+            on_press: root.transition_to_upcoming_events()

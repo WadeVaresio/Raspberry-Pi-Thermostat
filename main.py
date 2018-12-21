@@ -1,16 +1,22 @@
 #!/usr/bin/env python3
 
-from thermostat.calendarevents import CalendarEvents
+from thermostat.calendarevents import GoogleCalendar
 from thermostat.ui import GUI
 from apscheduler.schedulers.background import BackgroundScheduler
+from thermostat import data
 
-google_cal = CalendarEvents.CalendarEvents('credentials.json')
-calendar_events = google_cal.get_events(10)
+google_cal = GoogleCalendar('credentials.json')
+CALENDAR_EVENTS = google_cal.get_events(10)
+MAX_AMOUNT_OF_EVENTS = 10
 
 
 def refresh_calendar_events():
-    global calendar_events
-    calendar_events = google_cal.get_events(10)
+    """
+    Refresh the calendar events, for use with BackgroundScheduler
+    :return: None
+    """
+    global CALENDAR_EVENTS
+    data.set_calendar_events(google_cal.get_events(MAX_AMOUNT_OF_EVENTS))
 
 
 def update_temperature():
@@ -19,17 +25,17 @@ def update_temperature():
 
 if __name__ == "__main__":
     refresh_events_scheduler = BackgroundScheduler()
-    refresh_events_scheduler.add_job(refresh_calendar_events, 'interval', seconds=10)
+    refresh_events_scheduler.add_job(refresh_calendar_events, 'interval', minutes=1)
 
     update_current_temp_scheduler = BackgroundScheduler()
     update_current_temp_scheduler.add_job(update_temperature, 'interval', minutes=5)
 
     try:
+        refresh_calendar_events() # initially populate data so no delay
         refresh_events_scheduler.start()
         update_current_temp_scheduler.start()
         update_temperature()
+        GUI.initialize()
     except (KeyboardInterrupt, SystemExit):
         refresh_events_scheduler.shutdown()
         update_current_temp_scheduler.shutdown()
-
-    GUI.initialize()
