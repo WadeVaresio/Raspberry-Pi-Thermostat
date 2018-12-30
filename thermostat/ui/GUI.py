@@ -4,9 +4,6 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.image import Image
-from kivy.uix.popup import Popup
-from kivy.uix.label import Label
-from kivy.uix.floatlayout import FloatLayout
 from apscheduler.schedulers.background import BackgroundScheduler
 from thermostat import data
 import time
@@ -18,7 +15,7 @@ Builder.load_file('thermostat/ui/UpcomingEvents.kv')
 Window.clearcolor = (1, 1, 1, 1)
 Window.size = (1000, 1000)
 
-TEMPERATURE = 68
+TEMPERATURE = 68.0
 PROPOSED_TEMP = TEMPERATURE
 
 
@@ -100,12 +97,15 @@ class ImageButton(ButtonBehavior, Image):
 
 class UpcomingEvents(Screen):
     #TODO implement back button
-
     def on_enter(self):
         """
         Change the labels to corresponding events from google calendar
         :return: None
         """
+        if data.no_events():
+            self.display_popup()
+            return
+
         label_widgets = [self.ids.event_label0, self.ids.event_label1, self.ids.event_label2, self.ids.event_label3, self.ids.event_label4,
                             self.ids.event_label5, self.ids.event_label6, self.ids.event_label7, self.ids.event_label8, self.ids.event_label9]
 
@@ -155,4 +155,3 @@ def initialize():
 def update_temperature():
     # TODO implement temperature sensor
     screen_manager.get_screen('main').ids.current_temp_label.text = "Current Temp: %sF" % str(TEMPERATURE)
-

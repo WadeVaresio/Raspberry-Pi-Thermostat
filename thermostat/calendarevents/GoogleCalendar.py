@@ -36,9 +36,6 @@ class GoogleCalendar:
                                                    orderBy='startTime').execute()
         self.events = events_result.get('items', [])
 
-        if not self.events:
-            print("there are no upcoming events in the calendar")
-
         return self.events
 
     def write_events_to_file(self, num_events):
