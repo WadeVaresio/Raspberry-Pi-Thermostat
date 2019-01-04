@@ -1,8 +1,8 @@
 from __future__ import print_function
-import datetime
 from googleapiclient.discovery import build
 from httplib2 import Http
 from oauth2client import file, client, tools
+import datetime
 
 
 class GoogleCalendar:
@@ -22,6 +22,7 @@ class GoogleCalendar:
             flow = client.flow_from_clientsecrets(self.credentialName, self.SCOPES)
             self.credentials = tools.run_flow(flow, self.store)
         self.events = []
+        self.database = None
 
     def get_events(self, num_events):
         """
@@ -42,7 +43,7 @@ class GoogleCalendar:
         """
         Write the upcoming events from the calendar to a text file
         :param num_events: Number of events to fetch from Google Calendar to write to the text file
-        :return: None
+        :return: False if the number of events is 0, True otherwise
         """
         if num_events < 0:
             return False
@@ -53,3 +54,5 @@ class GoogleCalendar:
             start = event['start'].get('dateTime', event['start'].get('date'))
             f.write(start + " " + event['summary'])
         f.close()
+
+        return True
