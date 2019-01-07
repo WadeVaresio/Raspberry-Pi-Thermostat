@@ -56,20 +56,16 @@ def print_all_events():
         print("Creator: " + row[4])
 
 
-def close_database(self):
-    """
-    Close the connection to the database
-    :return: None
-    """
-    self.database.close()
-
-
 def add_to_queue(data):
     global QUEUE
     QUEUE.put(data)
 
 
 def write_from_queue():
+    """
+    Write all of the events from the queue to the database. Will not add an event if it is scheduled for all day.
+    :return:
+    """
     for index in range(QUEUE.qsize()):
         events = QUEUE.get()
         check_for_deletions(events)
@@ -77,8 +73,19 @@ def write_from_queue():
             ID = event['id']
             start = event['start'].get('dateTime')
             end = event['end'].get('dateTime')
-            temp = float(event['summary'])
+
+            if not isinstance(start, str) or not isinstance(end, str):
+                print("Event not added since it is an all day event")
+                continue
+
+            try:
+                temp = float(event['summary'])
+            except ValueError:
+                print("ERROR, summary of event was not a number did not add to database")
+                continue
+
             creator = event['creator'].get('displayName')
+
             write_event(ID, start, end, temp, creator)
 
 

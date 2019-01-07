@@ -24,7 +24,7 @@ def update_temperature():
 
 if __name__ == "__main__":
     refresh_events_scheduler = BackgroundScheduler()
-    refresh_events_scheduler.add_job(refresh_calendar_events, 'interval', seconds=10)
+    refresh_events_scheduler.add_job(refresh_calendar_events, 'interval', minutes=5)
 
     update_current_temp_scheduler = BackgroundScheduler()
     update_current_temp_scheduler.add_job(update_temperature, 'interval', minutes=5)
