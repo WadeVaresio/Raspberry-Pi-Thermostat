@@ -35,7 +35,6 @@ def remove_event_by_id(ID):
     :param ID: ID of the event to be removed
     :return: None
     """
-    # TODO verify this method is working
     database = connect_to_database()
     database.execute("DELETE from EVENTS where ID = ?;", [ID])
     database.commit()
@@ -73,6 +72,7 @@ def add_to_queue(data):
 def write_from_queue():
     for index in range(QUEUE.qsize()):
         events = QUEUE.get()
+        check_for_deletions(events)
         for event in events:
             ID = event['id']
             start = event['start'].get('dateTime')
@@ -107,6 +107,26 @@ def check_for_existing_event(event_id):
     return False
 
 
+def check_for_deletions(data):
+    """
+    Check the new data from the queue against the current data stored for any deletions
+    :param data: The new data from the queue
+    :return: None
+    """
+    database = connect_to_database()
+
+    database_data = []
+    for old_event in database.execute("SELECT ID FROM EVENTS"):
+        database_data.append(old_event[0])
+
+    new_data = []
+    for new_event in data:
+        new_data.append(new_event['id'])
+
+    for diff in set(database_data) - set(new_data):
+        remove_event_by_id(diff)
+
+
 def update_event(ID, start, end, temperature, creator):
     """
     Update an event in the database based off its ID
@@ -128,7 +148,7 @@ def update_event(ID, start, end, temperature, creator):
 def connect_to_database():
     """
     Connect to the SQLite database
-    :return: SQLite3 object
+    :return: SQLite3 Connection Object
     """
     return sqlite3.connect(DATABASE_FILE)
 
