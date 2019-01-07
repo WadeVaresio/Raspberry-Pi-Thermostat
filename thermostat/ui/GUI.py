@@ -5,7 +5,7 @@ from kivy.core.window import Window
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.image import Image
 from apscheduler.schedulers.background import BackgroundScheduler
-from thermostat import data
+from thermostat.database import Database
 import time
 
 screen_manager = ScreenManager()
@@ -102,9 +102,7 @@ class UpcomingEvents(Screen):
         Change the labels to corresponding events from google calendar
         :return: None
         """
-        if data.no_events():
-            self.display_popup()
-            return
+        data = Database.get_all_events()
 
         label_widgets = [self.ids.event_label0, self.ids.event_label1, self.ids.event_label2, self.ids.event_label3, self.ids.event_label4,
                             self.ids.event_label5, self.ids.event_label6, self.ids.event_label7, self.ids.event_label8, self.ids.event_label9]
@@ -113,10 +111,10 @@ class UpcomingEvents(Screen):
                           self.ids.edit_event_5, self.ids.edit_event_6, self.ids.edit_event_7, self.ids.edit_event_8, self.ids.edit_event_9]
 
         index = 0
-        for event in data.get_calendar_events():
-            start_time = event['start'].get('dateTime', event['start'].get('date'))
+        for event in data:
+            start_time = event[1]
             label_widgets[index].event_start = start_time
-            label_widgets[index].text = event['summary'] + " on " + start_time
+            label_widgets[index].text = str(event[3]) + " at " + start_time
             index += 1
 
         for i in range(index, len(label_widgets)):
@@ -131,11 +129,6 @@ class UpcomingEvents(Screen):
         :param instance: Instance of the button that was just pressed
         :return: None
         """
-        # TODO disable touch ability of "hidden" buttons
-        if instance.associated_event >= len(data.get_calendar_events()):
-            print("Touching button that should be hidden")
-            return
-
         print(instance.associated_event)
 
 
