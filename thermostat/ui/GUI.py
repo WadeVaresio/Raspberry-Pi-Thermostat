@@ -2,10 +2,9 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.core.window import Window
-from kivy.uix.behaviors import ButtonBehavior
-from kivy.uix.image import Image
 from apscheduler.schedulers.background import BackgroundScheduler
 from thermostat.database import Database
+from kivy.clock import Clock
 import time
 
 screen_manager = ScreenManager()
@@ -21,21 +20,15 @@ PROPOSED_TEMP = TEMPERATURE
 
 class Main(App):
 
-    @staticmethod
-    def update_time():
-        """
-        Update the time label to represent the current time
-        :return: None
-        """
-        screen_manager.get_screen('main').ids.clock_label.text = time.asctime()
-
     def build(self):
         """
         Called upon creation of the app, used to initiliaze background processes
         :return:
         """
+        self.title = "Raspberry Pi Thermostat"
+
         update_time_scheduler = BackgroundScheduler()
-        update_time_scheduler.add_job(self.update_time, 'interval', seconds=0.9)
+        update_time_scheduler.add_job(MainScreen.update_time, 'interval', seconds=0.9)
 
         try:
             update_time_scheduler.start()
@@ -56,15 +49,11 @@ class MainScreen(Screen):
 
     @staticmethod
     def update_time():
+        """
+        Update the time for the current time label
+        :return:
+        """
         screen_manager.get_screen('main').ids.clock_label.text = time.asctime()
-
-    @staticmethod
-    def set_button_press():
-        global TEMPERATURE, PROPOSED_TEMP
-        TEMPERATURE = PROPOSED_TEMP
-
-        screen_manager.get_screen('main').ids.current_temp_label.text = "Current Temp: %sF" % str(TEMPERATURE)
-        screen_manager.get_screen('main').ids.set_temperature_label.color = 0, 0, 0, 0
 
     @staticmethod
     def transition_to_main():
@@ -75,24 +64,17 @@ class MainScreen(Screen):
         # TODO check if calendar events is empty/display popup
         screen_manager.current = 'upcoming_events'
 
+    def temp_slider_change(self):
+        self.ids.proposed_temp.color = 0.960, 0.847, 0.380, 1
+        self.ids.proposed_temp.text = str(self.ids.temp_slider.value)
 
-class ImageButton(ButtonBehavior, Image):
+        Clock.schedule_once(lambda dt: self.hide_proposed_temp_label(), 10)
 
-    def update_proposed_temp(self, instance):
-        global PROPOSED_TEMP
-
-        if instance.change is "increase":
-            PROPOSED_TEMP += 1
-            self.update_temp(PROPOSED_TEMP)
-        else:
-            PROPOSED_TEMP -= 1
-            self.update_temp(PROPOSED_TEMP)
-
-    @staticmethod
-    def update_temp(temp):
-        set_temp_label = screen_manager.get_screen('main').ids.set_temperature_label
-        set_temp_label.color = 0, 0, 0, 1
-        set_temp_label.text = str(temp)
+    def hide_proposed_temp_label(self):
+        global PROPOSED_TEMP, TEMPERATURE
+        self.ids.proposed_temp.color = 0, 0, 0, 0
+        TEMPERATURE = self.ids.temp_slider.value
+        update_temperature()
 
 
 class UpcomingEvents(Screen):
@@ -146,5 +128,8 @@ def initialize():
 
 
 def update_temperature():
-    # TODO implement temperature sensor
+    """
+    Update the current temperature label using the global: Temperature
+    :return:
+    """
     screen_manager.get_screen('main').ids.current_temp_label.text = "Current Temp: %sF" % str(TEMPERATURE)
