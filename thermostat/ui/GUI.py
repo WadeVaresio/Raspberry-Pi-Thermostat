@@ -1,11 +1,13 @@
+import time
+
+from apscheduler.schedulers.background import BackgroundScheduler
 from kivy.app import App
+from kivy.clock import Clock
+from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.core.window import Window
-from apscheduler.schedulers.background import BackgroundScheduler
+
 from thermostat.database import Database
-from kivy.clock import Clock
-import time
 
 screen_manager = ScreenManager()
 Builder.load_file('thermostat/ui/GUI.kv')
@@ -78,7 +80,7 @@ class MainScreen(Screen):
 
 
 class UpcomingEvents(Screen):
-    #TODO implement back button
+
     def on_enter(self):
         """
         Change the labels to corresponding events from google calendar
@@ -105,13 +107,17 @@ class UpcomingEvents(Screen):
             button_widgets[i].background_color = (0, 0, 0, 0)
 
     @staticmethod
-    def edit_button_pressed(instance):
+    def edit_button_action(instance):
         """
         Function when an edit event button is pressed on the upcoming events screen
         :param instance: Instance of the button that was just pressed
         :return: None
         """
         print(instance.associated_event)
+
+    @staticmethod
+    def back_button_action():
+        screen_manager.current = 'main'
 
 
 screen_manager.add_widget(MainScreen(name='main'))

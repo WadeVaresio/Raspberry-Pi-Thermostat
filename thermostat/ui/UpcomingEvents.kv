@@ -5,7 +5,7 @@
     name: "upcoming_events"
 
     GridLayout:
-        rows: 10
+        rows: 11
         col: 2
 
         Label:
@@ -16,7 +16,7 @@
         EditEventButton:
             id: edit_event_0
             associated_event: 0
-            on_press: root.edit_button_pressed(self)
+            on_press: root.edit_button_action(self)
         Label:
             id: event_label1
             text: "Event 2"
@@ -25,7 +25,7 @@
         EditEventButton:
             id: edit_event_1
             associated_event: 1
-            on_press: root.edit_button_pressed(self)
+            on_press: root.edit_button_action(self)
         Label:
             id: event_label2
             text: "Event 3"
@@ -34,7 +34,7 @@
         EditEventButton:
             id: edit_event_2
             associated_event: 2
-            on_press: root.edit_button_pressed(self)
+            on_press: root.edit_button_action(self)
         Label:
             id: event_label3
             text: "Event 4"
@@ -43,7 +43,7 @@
         EditEventButton:
             id: edit_event_3
             associated_event: 3
-            on_press: root.edit_button_pressed(self)
+            on_press: root.edit_button_action(self)
         Label:
             id: event_label4
             text: "Event 5"
@@ -52,7 +52,7 @@
         EditEventButton:
             id: edit_event_4
             associated_event: 4
-            on_press: root.edit_button_pressed(self)
+            on_press: root.edit_button_action(self)
         Label:
             id: event_label5
             text: "Event 6"
@@ -61,7 +61,7 @@
         EditEventButton:
             id: edit_event_5
             associated_event: 5
-            on_press: root.edit_button_pressed(self)
+            on_press: root.edit_button_action(self)
         Label:
             id: event_label6
             text: "Event 7"
@@ -70,7 +70,7 @@
         EditEventButton:
             id: edit_event_6
             associated_event: 6
-            on_press: root.edit_button_pressed(self)
+            on_press: root.edit_button_action(self)
         Label:
             id: event_label7
             text: "Event 8"
@@ -79,7 +79,7 @@
         EditEventButton:
             id: edit_event_7
             associated_event: 7
-            on_press: root.edit_button_pressed(self)
+            on_press: root.edit_button_action(self)
         Label:
             id: event_label8
             text: "Event 9"
@@ -88,7 +88,7 @@
         EditEventButton:
             id: edit_event_8
             associated_event: 8
-            on_press: root.edit_button_pressed(self)
+            on_press: root.edit_button_action(self)
         Label:
             id: event_label9
             text: "Event 10"
@@ -97,4 +97,11 @@
         EditEventButton:
             id: edit_event_9
             associated_event: 9
-            on_press: root.edit_button_pressed(self)
+            on_press: root.edit_button_action(self)
+        Label:
+
+        Button:
+            text: "Back"
+            font_size: 25
+            background_color: 0.996, 0.145, 0.360, 1
+            on_touch_down: root.back_button_action()
