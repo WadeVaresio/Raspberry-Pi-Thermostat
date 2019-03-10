@@ -1,6 +1,3 @@
-<ImageButton>:
-    size_hint: None, None
-
 <MainScreen>:
     name: "main"
     FloatLayout:
@@ -18,68 +15,51 @@
         # Current temperature label
         Label:
             id: current_temp_label
-            font_size: 45
+            font_size: 40
             text: ""
-            center_x: root.center_x * 0.8
+            center_x: root.center_x * 0.45
             center_y: root.center_y * 1.45
             color: 0, 0, 1, 1
 
-        #Set temperature label
-        Label:
-            id: set_temperature_label
-            font_size: 45
-            text: ""
-            center_x: root.width * 0.875
-            center_y: root.height * 0.45
-            color: 0, 0, 0, 0
+        #Upcoming events
+        Button:
+            id: upcoming_events_button
+            text: "Upcoming Events"
+            font_size: 25
+            center_x: root.center_x * 0.45
+            center_y: root.height * 0.6
+            size_hint: None, None
+            size: 200, 75
+            background_color: 0.631, 0.8, 0.827, 1
+            on_press: root.transition_to_upcoming_events()
 
 		# Quit Button
         Button:
             text: 'X'
             font_size: 23
-            size_hint: None,None
+            size_hint: None, None
             size: root.width * 0.015, root.width * 0.015
             x: root.width * 0.965
             y: root.height * 0.945
             background_color: 0.7, 0.7, 0.7, 1
             on_press: root.exit_program()
 
-        # Arrow up image
-        ImageButton:
-            id: arrow_up_image
-            change: "increase"
-            x: root.width * 0.8
-            y: root.height * 0.5
-            size: 175, 175
-            source: 'thermostat/ui/images/arrow_up.png'
-            on_press: self.update_proposed_temp(self)
+        # Temperature Change Slider
+        Slider:
+            id: temp_slider
+            orientation: "vertical"
+            range: 60, 80
+            step: 1
+            center_x: root.width * 0.85
+            center_y: root.height * 0.5
+            size_hint_y: 4.5
+            on_touch_move: root.temp_slider_change()
 
-        # Arrow down image
-        ImageButton:
-            id: arrow_down_image
-            change: "decrease"
-            x: root.width * 0.8
-            y: root.height * 0.25
-            size: 175, 175
-            source: 'thermostat/ui/images/arrow_down.png'
-            on_press: self.update_proposed_temp(self)
-
-        #Set Button
-        Button:
-            id: set_button
-            text: "Set"
-            x: root.width * 0.835
-            y: root.height * 0.15
-            size: 100, 100
-            background_color: 0.5, 0.5, 0.5, 1
-            on_press: root.set_button_press()
-
-        #Upcoming events
-        Button:
-            id: upcoming_events_button
-            text: "Upcoming"
-            x: root.width * 0.165
-            y: root.height * 0.15
-            size: 100, 100
-            background_color: 0.5, 0.5, 0.5, 1
-            on_press: root.transition_to_upcoming_events()
+        #Proposed Temperature Label
+        Label:
+            id: proposed_temp
+            text: ""
+            font_size: 45
+            center_x: root.width * 0.8
+            center_y: root.height * 0.5
+            color: 0, 0, 0, 0
