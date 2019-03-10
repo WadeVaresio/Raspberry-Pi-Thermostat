@@ -6,7 +6,7 @@ import datetime
 
 
 class GoogleCalendar:
-    SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
+    SCOPES = 'https://www.googleapis.com/auth/calendar'
 
     def __init__(self, credential_name):
         """
