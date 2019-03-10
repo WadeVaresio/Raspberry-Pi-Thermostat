@@ -20,7 +20,7 @@ python3 main.py
 1. Go into the terminal and run `crontab -e`
 2. Select the editor you want to use in terminal to edit the crontab (nano or vim)
 3. Enter the line at the bottom `@reboot sh /path/to/your/launcher/script`
-    4. Ensure the path to your launcher script is correct, if it is incorrect the auto start will fail
+    * Ensure the path to your launcher script is correct, if it is incorrect the auto start will fail
 4. Reboot the pi and test if it works.
 
 ## Troubleshooting
